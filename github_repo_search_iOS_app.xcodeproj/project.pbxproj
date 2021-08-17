@@ -107,7 +107,6 @@
 		78DBC69526CA097300056550 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		78DBC6A726CA296900056550 /* Font+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extensions.swift"; sourceTree = "<group>"; };
 		78DBC6AD26CA2B1700056550 /* SearchItemDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemDetailsView.swift; sourceTree = "<group>"; };
-		78E0D85426CBB468004B3664 /* pull_request_template.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = pull_request_template.md; sourceTree = "<group>"; };
 		78F7370926C952320096F1D2 /* AppProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppProgressView.swift; sourceTree = "<group>"; };
 		78F7371626C967150096F1D2 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		78F7371B26C9691E0096F1D2 /* SplashConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashConstants.swift; sourceTree = "<group>"; };
@@ -220,7 +219,6 @@
 				7870A10326C4E15E003C0EB8 /* App */,
 				7870A10C26C4E23D003C0EB8 /* AppConfig */,
 				7870A0D226C4D7E1003C0EB8 /* Preview Content */,
-				78E0D85426CBB468004B3664 /* pull_request_template.md */,
 			);
 			path = github_repo_search_iOS_app;
 			sourceTree = "<group>";
