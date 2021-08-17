@@ -5,6 +5,9 @@
 - [ ] Please add API request throttling
 - [ ] The design can be as simple as you like
 
+# Demo - 
+Request for access if needed, some videos and various screen shots on different devices - dark mode, japanese language set on phone etc.
+- https://drive.google.com/drive/folders/1uwpVr0eZ3fh55vaala3djg2azkx2hJXy
 
 # Main GUI
 - Search name -
