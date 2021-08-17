@@ -134,6 +134,7 @@ https://api.github.com/search/repositories/?q=%22swiftui%22
 # TODO
 - Complete all unit test case
 - Complete all ui test cases
+- Add CI/CD - bitrise/deploygate/fastlane
 - Remove all prints statements
 - Implement some logger to write logs on file, don't write logs in release mode
 - Check gitHub api response format - check for all nil fields
