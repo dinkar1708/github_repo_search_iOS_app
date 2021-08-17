@@ -96,7 +96,6 @@
 		7870A18E26C4F81C003C0EB8 /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		7870A19326C4F859003C0EB8 /* GithubRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubRepository.swift; sourceTree = "<group>"; };
 		7870A1BC26C4F96D003C0EB8 /* GithubAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubAPI.swift; sourceTree = "<group>"; };
-		7870A1C126C4FBDE003C0EB8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7870A1C726C505EA003C0EB8 /* SearchRepoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepoRequest.swift; sourceTree = "<group>"; };
 		7870A1CF26C50634003C0EB8 /* ApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
 		7870A1D426C5093B003C0EB8 /* SearchItemResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemResponse.swift; sourceTree = "<group>"; };
@@ -221,7 +220,6 @@
 				7870A10326C4E15E003C0EB8 /* App */,
 				7870A10C26C4E23D003C0EB8 /* AppConfig */,
 				7870A0D226C4D7E1003C0EB8 /* Preview Content */,
-				7870A1C126C4FBDE003C0EB8 /* README.md */,
 				78E0D85426CBB468004B3664 /* pull_request_template.md */,
 			);
 			path = github_repo_search_iOS_app;

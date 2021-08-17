@@ -5,6 +5,9 @@
 - [ ] Please add API request throttling
 - [ ] The design can be as simple as you like
 
+# Demo - 
+Request for access if needed, some videos and various screen shots on different devices - dark mode, japanese language set on phone etc.
+- https://drive.google.com/drive/folders/1uwpVr0eZ3fh55vaala3djg2azkx2hJXy
 
 # Main GUI
 - Search name -
@@ -131,6 +134,7 @@ https://api.github.com/search/repositories/?q=%22swiftui%22
 # TODO
 - Complete all unit test case
 - Complete all ui test cases
+- Add CI/CD - bitrise/deploygate/fastlane
 - Remove all prints statements
 - Implement some logger to write logs on file, don't write logs in release mode
 - Check gitHub api response format - check for all nil fields
