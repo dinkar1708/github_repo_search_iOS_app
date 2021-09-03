@@ -1,0 +1,15 @@
+/*
+  Localizable.strings
+  github_repo_search_iOS_app
+
+ Created by Dinakar Maurya on 2021/09/03.
+
+*/
+
+// common
+"common_loading" = "Loading...";
+
+// home screen
+"home_top_label" = "Search Github Repository";
+"home_search_help_text" = "Start typing to see the data from api...";
+"home_no_repository_name_found" = "No repository name found!";
