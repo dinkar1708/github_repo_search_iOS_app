@@ -10,8 +10,8 @@ Various screen shots on different devices - dark mode, japanese language set on 
 - https://drive.google.com/drive/folders/1uwpVr0eZ3fh55vaala3djg2azkx2hJXy?usp=sharing
 
 # Folder structure
-<img width="327" alt="Screenshot 2024-02-04 at 20 56 41" src="https://github.com/dinkar1708/github_repo_search_iOS_app/assets/14831652/a793a4db-8ed3-4ba5-aae4-c5c223c88356">
 <img width="349" alt="Screenshot 2024-02-04 at 20 56 26" src="https://github.com/dinkar1708/github_repo_search_iOS_app/assets/14831652/2d5da198-eabb-40bd-84cf-4e1893ddef57">
+<img width="327" alt="Screenshot 2024-02-04 at 20 56 41" src="https://github.com/dinkar1708/github_repo_search_iOS_app/assets/14831652/a793a4db-8ed3-4ba5-aae4-c5c223c88356">
 
 # Main GUI
 - Search name -
