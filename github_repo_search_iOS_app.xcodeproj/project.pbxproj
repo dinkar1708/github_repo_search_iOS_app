@@ -138,6 +138,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		47826A0F2B6FB1710043DEC5 /* Feature */ = {
+			isa = PBXGroup;
+			children = (
+				78F7371126C966650096F1D2 /* UI */,
+				7870A14E26C4E70D003C0EB8 /* Util */,
+			);
+			path = Feature;
+			sourceTree = "<group>";
+		};
 		78107CAE26C806EA009D8BDD /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,7 +226,8 @@
 		7870A0CB26C4D7E0003C0EB8 /* github_repo_search_iOS_app */ = {
 			isa = PBXGroup;
 			children = (
-				7870A10326C4E15E003C0EB8 /* App */,
+				7870A10726C4E1B3003C0EB8 /* Resource */,
+				7870A10326C4E15E003C0EB8 /* Modules */,
 				7870A10C26C4E23D003C0EB8 /* AppConfig */,
 				7870A0D226C4D7E1003C0EB8 /* Preview Content */,
 			);
@@ -252,15 +262,13 @@
 			path = github_repo_search_iOS_appUITests;
 			sourceTree = "<group>";
 		};
-		7870A10326C4E15E003C0EB8 /* App */ = {
+		7870A10326C4E15E003C0EB8 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				78F7371126C966650096F1D2 /* UI */,
-				7870A14E26C4E70D003C0EB8 /* Util */,
+				47826A0F2B6FB1710043DEC5 /* Feature */,
 				7870A14926C4E681003C0EB8 /* Data */,
-				7870A10726C4E1B3003C0EB8 /* Resource */,
 			);
-			path = App;
+			path = Modules;
 			sourceTree = "<group>";
 		};
 		7870A10726C4E1B3003C0EB8 /* Resource */ = {
@@ -295,12 +303,12 @@
 		7870A14926C4E681003C0EB8 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				7870A14A26C4E68F003C0EB8 /* Network */,
+				7870A14A26C4E68F003C0EB8 /* Remote */,
 			);
 			path = Data;
 			sourceTree = "<group>";
 		};
-		7870A14A26C4E68F003C0EB8 /* Network */ = {
+		7870A14A26C4E68F003C0EB8 /* Remote */ = {
 			isa = PBXGroup;
 			children = (
 				7870A1C626C505AE003C0EB8 /* Response */,
@@ -309,7 +317,7 @@
 				7870A17F26C4F754003C0EB8 /* Repository */,
 				7870A17E26C4F74D003C0EB8 /* API */,
 			);
-			path = Network;
+			path = Remote;
 			sourceTree = "<group>";
 		};
 		7870A14E26C4E70D003C0EB8 /* Util */ = {
