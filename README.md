@@ -16,20 +16,16 @@ A modern, native iOS application for searching GitHub repositories with a beauti
 
 ## Screenshots
 
-View various screenshots on different devices:
-- [Demo Screenshots](https://drive.google.com/drive/folders/1uwpVr0eZ3fh55vaala3djg2azkx2hJXy?usp=sharing)
+<img width="350" height="750" alt="Simulator Screenshot - iPhone 17e - 2026-06-11 at 15 34 35" src="https://github.com/user-attachments/assets/d7bf4028-e22e-4b64-8c1b-0d8ec9e0c70e" />
+<img width="350" height="750" alt="Simulator Screenshot - iPhone 17e - 2026-06-11 at 15 36 28" src="https://github.com/user-attachments/assets/170e1196-0279-4c4f-a4e2-6460bb3dbcbf" />
+<img width="350" height="750" alt="Simulator Screenshot - iPhone 17e - 2026-06-11 at 15 35 49" src="https://github.com/user-attachments/assets/be540b62-effd-4e30-b235-c02645d134c4" />
+<img width="350" height="750" alt="Simulator Screenshot - iPhone 17e - 2026-06-11 at 15 35 52" src="https://github.com/user-attachments/assets/c9f0303f-fb97-4d71-ba6e-cdadcbc98640" />
+
 
 # Folder structure
 <img width="349" alt="Screenshot 2024-02-04 at 20 56 26" src="https://github.com/dinkar1708/github_repo_search_iOS_app/assets/14831652/2d5da198-eabb-40bd-84cf-4e1893ddef57">
 <img width="327" alt="Screenshot 2024-02-04 at 20 56 41" src="https://github.com/dinkar1708/github_repo_search_iOS_app/assets/14831652/a793a4db-8ed3-4ba5-aae4-c5c223c88356">
 
-# Main GUI
-- Search name -
- <img src="https://user-images.githubusercontent.com/14831652/129710622-99dd0b92-ab4f-4c6c-975a-01b4c1fd3c60.jpeg" alt="Search Screen Light Mode" width="300" >
-- Search name dark mode 
- <img src="https://user-images.githubusercontent.com/14831652/129710745-2dcebf1b-6a84-4f0a-bef8-a8435332352b.jpeg" alt="Search Screen Dark Mode" width="300" >
-- Search name iPAD
- <img src="https://user-images.githubusercontent.com/14831652/129705497-a74f8ffa-bbc0-466d-a0f7-cd37e375c78a.png" alt="Search Screen Dark Mode" width="400" > 
 
 ## Modern UI Features
 
