@@ -20,6 +20,8 @@ enum SearchItemCellConstants {
 enum HomeConstants {
     // seconds wait for next api call
     static let searchRepositoryThrottleTime = 3
+    // minimum characters required before search
+    static let minimumSearchCharacters = 3
     // before how many elements remains visible, next page search should start
     static let searchNextPageThreshold = -4
     static let searchPageSize = 40

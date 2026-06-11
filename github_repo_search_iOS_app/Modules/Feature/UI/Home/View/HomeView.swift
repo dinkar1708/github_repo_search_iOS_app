@@ -54,16 +54,13 @@ struct HomeView: View {
 
     private var headerView: some View {
         VStack(spacing: 16) {
-            // App title with icon
+            // App title
             HStack {
-                Image(systemName: "magnifyingglass.circle.fill")
-                    .font(.title)
-                    .foregroundColor(.blue)
-
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Repository Search")
-                        .font(.headline)
-                    Text("Search millions of repos")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                    Text("Search millions of GitHub repos")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
@@ -73,11 +70,12 @@ struct HomeView: View {
             .padding(.horizontal)
             .padding(.top, 8)
 
-            // Search bar
+            // Search bar (already has magnifying glass icon built-in)
             AppSearchBar(
                 text: $homeViewModel.searchText,
-                textDidChanged: { text in
-                    homeViewModel.searchText = text
+                textDidChanged: { _ in
+                    // Text is already updated via binding, no need to set again
+                    // ViewModel's Combine throttle will handle the API calls
                 },
                 placeholder: .constant("Search repositories...")
             )
@@ -86,8 +84,6 @@ struct HomeView: View {
             // Results count if available
             if !homeViewModel.searchItems.isEmpty {
                 HStack {
-                    Image(systemName: "doc.text.magnifyingglass")
-                        .foregroundColor(.secondary)
                     Text("\(homeViewModel.searchItems.count) repositories found")
                         .font(.caption)
                         .foregroundColor(.secondary)

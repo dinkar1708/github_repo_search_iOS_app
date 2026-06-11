@@ -36,12 +36,17 @@ class HomeViewModel: ObservableObject {
             // wait at least for below seconds to emit text
             .throttle(for: .seconds(HomeConstants.searchRepositoryThrottleTime), scheduler: DispatchQueue.main, latest: true)
             .filter{
-                if($0.isEmpty) {
-                    // show empty result, query is empty, api call not needed
-                    self.messageState = .emptySearchResult
+                // require minimum characters for search
+                if $0.isEmpty || $0.count < HomeConstants.minimumSearchCharacters {
+                    // show empty result, query is empty or too short, api call not needed
+                    if $0.isEmpty {
+                        self.messageState = .emptySearchResult
+                    } else {
+                        self.messageState = .loaded
+                    }
                     self.searchItems.removeAll()
                     return false
-                }else {
+                } else {
                     return true
                 }
             }
