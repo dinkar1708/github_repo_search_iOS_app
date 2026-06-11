@@ -9,77 +9,198 @@ import SwiftUI
 import Combine
 
 /**
- Home view - display data for home screen
+ Home view - display data for home screen with modern iOS design
  */
 struct HomeView: View {
     @ObservedObject private var homeViewModel = HomeViewModel()
-    
+
     init() {
-        // customize table view, put it here not any global place, i want to customize this screen list only
-        UITableViewCell.appearance().backgroundColor = .none
-        UITableView.appearance().backgroundColor = Color.LightGray.uiColor()
+        // customize table view for modern appearance
+        UITableViewCell.appearance().backgroundColor = .clear
+        UITableView.appearance().backgroundColor = .clear
+        UITableView.appearance().separatorStyle = .none
     }
-    
+
     var body: some View {
         NavigationView {
-            VStack {
-                
-                HeadView
-                
-                ZStack {
-                    SearchResultView
-                    MessageView
+            ZStack {
+                // Background gradient
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color(UIColor.systemBackground),
+                        Color(UIColor.systemGray6)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
+
+                VStack(spacing: 0) {
+                    // Header
+                    headerView
+
+                    // Content
+                    ZStack {
+                        SearchResultView
+                        MessageView
+                    }
                 }
             }
-            .padding(.bottom, 2)
-            // StackNavigationViewStyle set for iPad to run in full screen mode
-        }.navigationViewStyle(StackNavigationViewStyle())
-    }
-    
-    private var HeadView: some View {
-        // header view of home screen
-        Group {
-            Text("home_search_help_text").font(.smallText).padding(.top)
-            AppSearchBar(text: $homeViewModel.searchText, textDidChanged: { text in
-                homeViewModel.searchText = text
-            }, placeholder: .constant("Search Repository"))
-            .navigationBarTitle(Text("home_top_label"), displayMode: .inline)
+            .navigationBarTitleDisplayMode(.large)
+            .navigationTitle("GitHub Search")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
-    
+
+    private var headerView: some View {
+        VStack(spacing: 16) {
+            // App title with icon
+            HStack {
+                Image(systemName: "magnifyingglass.circle.fill")
+                    .font(.title)
+                    .foregroundColor(.blue)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Repository Search")
+                        .font(.headline)
+                    Text("Search millions of repos")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+
+                Spacer()
+            }
+            .padding(.horizontal)
+            .padding(.top, 8)
+
+            // Search bar
+            AppSearchBar(
+                text: $homeViewModel.searchText,
+                textDidChanged: { text in
+                    homeViewModel.searchText = text
+                },
+                placeholder: .constant("Search repositories...")
+            )
+            .padding(.horizontal)
+
+            // Results count if available
+            if !homeViewModel.searchItems.isEmpty {
+                HStack {
+                    Image(systemName: "doc.text.magnifyingglass")
+                        .foregroundColor(.secondary)
+                    Text("\(homeViewModel.searchItems.count) repositories found")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Spacer()
+                }
+                .padding(.horizontal)
+            }
+        }
+        .padding(.bottom, 12)
+        .background(
+            Color(UIColor.systemBackground)
+                .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+        )
+    }
+
     private var MessageView: some View {
         // display messages
         Group {
             switch homeViewModel.messageState {
             case .loading:
-                AppProgressView()
+                VStack(spacing: 20) {
+                    ProgressView()
+                        .scaleEffect(1.5)
+                    Text("Searching repositories...")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
             case .error(let error):
-                ErrorView(title: error)
+                VStack(spacing: 20) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: 60))
+                        .foregroundColor(.red)
+                    Text("Error")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                    Text(error)
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                }
+                .padding()
             case .emptySearchResult:
-                NoDataEmptyView()
+                VStack(spacing: 20) {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 60))
+                        .foregroundColor(.gray)
+                    Text("No Repositories Found")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                    Text("Try adjusting your search terms")
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+                .padding()
             case .loaded:
-                EmptyView()
+                if homeViewModel.searchItems.isEmpty {
+                    VStack(spacing: 20) {
+                        Image(systemName: "book.fill")
+                            .font(.system(size: 60))
+                            .foregroundColor(.blue)
+                        Text("Start Searching")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        Text("Enter a repository name to begin")
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding()
+                } else {
+                    EmptyView()
+                }
             }
         }
     }
-    
+
     private var SearchResultView: some View {
-        // show the search result, progress view if needed
+        // show the search result with modern card design
         List {
             ForEach(homeViewModel.searchItems, id: \.self) { searchItem in
-                SearchItemCell(name: searchItem.name).onAppear {
-                    homeViewModel.searchForNextPage(currentItem: searchItem)
-                }
-                .background(NavigationLink(
-                                destination: SearchItemDetailsView(searchItem: searchItem),
-                                label: {
-                                    EmptyView()
-                                }))
+                SearchItemCell(searchItem: searchItem)
+                    .onAppear {
+                        homeViewModel.searchForNextPage(currentItem: searchItem)
+                    }
+                    .background(
+                        NavigationLink(
+                            destination: SearchItemDetailsView(searchItem: searchItem),
+                            label: { EmptyView() }
+                        )
+                        .opacity(0)
+                    )
             }
-            if (homeViewModel.isSearchingCurrentPage && homeViewModel.searchItems.count > 0) {
-                AppProgressView()
+
+            // Loading indicator for pagination
+            if homeViewModel.isSearchingCurrentPage && homeViewModel.searchItems.count > 0 {
+                HStack {
+                    Spacer()
+                    VStack(spacing: 12) {
+                        ProgressView()
+                        Text("Loading more...")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    Spacer()
+                }
+                .padding()
+                .listRowSeparator(.hidden)
             }
         }
+        .listStyle(.plain)
+        .background(Color.clear)
     }
 }
 
