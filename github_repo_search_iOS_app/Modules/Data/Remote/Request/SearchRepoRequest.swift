@@ -5,14 +5,14 @@
 //  Created by Dinakar Maurya on 2021/08/12.
 //
 
-import Combine
+import Foundation
 
 /**
- 
+ GitHub API calls for search in repositories using modern Swift concurrency
  */
-// MARK:- For git hub api calls For search in repo
+// MARK: - For git hub api calls For search in repo
 extension GithubAPI {
-    
+
     /**
      Search in repositories with specified query format
      */
@@ -24,15 +24,15 @@ extension GithubAPI {
             .get
         }
     }
-    
+
     /**
-     Reusbale api client for api call
+     Reusable api client for api call using async/await
      */
-    static func searchRepoNames(requestObject: SearchRepoRequest) -> AnyPublisher<SearchItemResponse, ApiResponseError> {
+    @MainActor
+    static func searchRepoNames(requestObject: SearchRepoRequest) async throws -> SearchItemResponse {
         var urlRequest = requestObject.buildURLRequest()
         urlRequest.httpBody = requestObject.encodeRequestBody()
-        return sharedApiClient.run(urlRequest)
-            .map(\.value)
-            .eraseToAnyPublisher()
+        let response: ApiClient.Response<SearchItemResponse> = try await sharedApiClient.run(urlRequest)
+        return response.value
     }
 }

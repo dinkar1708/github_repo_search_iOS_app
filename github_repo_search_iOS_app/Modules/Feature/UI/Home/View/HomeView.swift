@@ -6,13 +6,12 @@
 //
 
 import SwiftUI
-import Combine
 
 /**
  Home view - display data for home screen with modern iOS design
  */
 struct HomeView: View {
-    @ObservedObject private var homeViewModel = HomeViewModel()
+    @State private var homeViewModel = HomeViewModel()
 
     init() {
         // customize table view for modern appearance

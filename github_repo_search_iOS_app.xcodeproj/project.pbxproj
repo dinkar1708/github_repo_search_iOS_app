@@ -39,8 +39,6 @@
 		7870A1E226C50AEB003C0EB8 /* SearchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7870A1E126C50AEB003C0EB8 /* SearchItem.swift */; };
 		7870A1E726C51760003C0EB8 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7870A1E626C51760003C0EB8 /* HomeViewModel.swift */; };
 		78DBC68C26CA090D00056550 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78DBC68B26CA090D00056550 /* LaunchScreen.storyboard */; };
-		78DBC69126CA094600056550 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DBC69026CA094600056550 /* SceneDelegate.swift */; };
-		78DBC69626CA097300056550 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DBC69526CA097300056550 /* AppDelegate.swift */; };
 		78DBC6A826CA296900056550 /* Font+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DBC6A726CA296900056550 /* Font+Extensions.swift */; };
 		78DBC6AE26CA2B1700056550 /* SearchItemDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DBC6AD26CA2B1700056550 /* SearchItemDetailsView.swift */; };
 		78F7370A26C952320096F1D2 /* AppProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F7370926C952320096F1D2 /* AppProgressView.swift */; };
@@ -104,8 +102,6 @@
 		7870A1E126C50AEB003C0EB8 /* SearchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItem.swift; sourceTree = "<group>"; };
 		7870A1E626C51760003C0EB8 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		78DBC68B26CA090D00056550 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		78DBC69026CA094600056550 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		78DBC69526CA097300056550 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		78DBC6A726CA296900056550 /* Font+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extensions.swift"; sourceTree = "<group>"; };
 		78DBC6AD26CA2B1700056550 /* SearchItemDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemDetailsView.swift; sourceTree = "<group>"; };
 		78F7370926C952320096F1D2 /* AppProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppProgressView.swift; sourceTree = "<group>"; };
@@ -427,8 +423,6 @@
 			isa = PBXGroup;
 			children = (
 				78DBC68B26CA090D00056550 /* LaunchScreen.storyboard */,
-				78DBC69026CA094600056550 /* SceneDelegate.swift */,
-				78DBC69526CA097300056550 /* AppDelegate.swift */,
 			);
 			path = Launch;
 			sourceTree = "<group>";
@@ -596,7 +590,6 @@
 				78F7370A26C952320096F1D2 /* AppProgressView.swift in Sources */,
 				7870A0CF26C4D7E0003C0EB8 /* HomeView.swift in Sources */,
 				78F7371C26C9691E0096F1D2 /* SplashConstants.swift in Sources */,
-				78DBC69626CA097300056550 /* AppDelegate.swift in Sources */,
 				7870A18F26C4F81C003C0EB8 /* Data+Extensions.swift in Sources */,
 				7870A0CD26C4D7E0003C0EB8 /* LauncherView.swift in Sources */,
 				78DBC6AE26CA2B1700056550 /* SearchItemDetailsView.swift in Sources */,
@@ -609,7 +602,6 @@
 				782018BA26C573340096AC40 /* HomeConstants.swift in Sources */,
 				7870A19426C4F859003C0EB8 /* GithubRepository.swift in Sources */,
 				7870A18226C4F7A5003C0EB8 /* ApiClient.swift in Sources */,
-				78DBC69126CA094600056550 /* SceneDelegate.swift in Sources */,
 				7870A18A26C4F7F0003C0EB8 /* ApiResponseError.swift in Sources */,
 				7870A1BD26C4F96D003C0EB8 /* GithubAPI.swift in Sources */,
 				781C352D26C56BDD00DDE8AA /* SearchItemCell.swift in Sources */,
@@ -719,7 +711,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -776,7 +768,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -799,7 +791,7 @@
 				DISPLAY_NAME = DebugGithubRepoSearchiOS;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = github_repo_search_iOS_app/AppCOnfig/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -823,7 +815,7 @@
 				DISPLAY_NAME = GithubRepoSearchiOS;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = github_repo_search_iOS_app/AppCOnfig/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -843,7 +835,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = github_repo_search_iOS_appTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -864,7 +856,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = github_repo_search_iOS_appTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -962,7 +954,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -985,7 +977,7 @@
 				DISPLAY_NAME = InhouseGithubRepoSearchiOS;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = github_repo_search_iOS_app/AppCOnfig/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1005,7 +997,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = github_repo_search_iOS_appTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

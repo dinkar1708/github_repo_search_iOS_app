@@ -13,10 +13,10 @@ import SwiftUI
 struct SplashView: View {
     @State private var startHomeScreen = false
     @State private var isAnimationNotStarted = true
-    
+
     var body: some View {
         ZStack {
-            if(startHomeScreen) {
+            if startHomeScreen {
                 HomeView()
             } else {
                 ZStack {
@@ -24,22 +24,22 @@ struct SplashView: View {
                         .scaleEffect(isAnimationNotStarted ? CGFloat(0.2) : 1)
                         .rotationEffect(Angle.degrees(isAnimationNotStarted ? SplashConstants.animationRotationStartAngle : SplashConstants.animationRotationEndAngle))
                         .opacity(isAnimationNotStarted ? 0 : 1)
-                        .animation(Animation.easeInOut(duration: SplashConstants.animationDuration).delay(1))
-                        .onAppear(perform: {
+                        .animation(.easeInOut(duration: SplashConstants.animationDuration).delay(1), value: isAnimationNotStarted)
+                        .onAppear {
                             isAnimationNotStarted = false
-                        })
-                }.frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.white).edgesIgnoringSafeArea(.all)
-            }
-        }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + SplashConstants.splashFinishTime) {
-                withAnimation {
-                    startHomeScreen = true
+                        }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.white)
+                .ignoresSafeArea()
             }
         }
-        
+        .task {
+            try? await Task.sleep(nanoseconds: UInt64(SplashConstants.splashFinishTime * 1_000_000_000))
+            withAnimation {
+                startHomeScreen = true
+            }
+        }
     }
 }
 

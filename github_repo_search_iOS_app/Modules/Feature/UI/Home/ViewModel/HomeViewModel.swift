@@ -5,118 +5,135 @@
 //  Created by Dinakar Maurya on 2021/08/12.
 //
 
-import Combine
 import SwiftUI
 import Foundation
 
 /**
- Home view model for data collections and operation
+ Home view model for data collections and operation using modern Swift concurrency
  Responsible for data change
  */
-class HomeViewModel: ObservableObject {
+@Observable
+@MainActor
+class HomeViewModel {
     private let gitHubRepository = DefaultGithubRepository()
-    private var cancellableSet: Set<AnyCancellable> = []
-    @Published var searchText:String = ""
-    
-    @Published private(set) var messageState: MessageState
+    private var searchTask: Task<Void, Never>?
+
+    var searchText: String = "" {
+        didSet {
+            handleSearchTextChange()
+        }
+    }
+
+    private(set) var messageState: MessageState
     private var currentPage = HomeConstants.searchPageDefaultPage
-    
+
     // stop trigger api call until current is in progress
-    @Published var isSearchingCurrentPage = false
+    var isSearchingCurrentPage = false
     // change only if trigger next page and get success result
     private var isSearchDataAvailableCurrentPage = true
-    
-    @Published var searchItems = [SearchItem]()
-    
+
+    var searchItems = [SearchItem]()
+
     init(state: MessageState = .loading) {
         // initialize state
         messageState = state
-        // sink text change for api call
-        $searchText
-            // wait at least for below seconds to emit text
-            .throttle(for: .seconds(HomeConstants.searchRepositoryThrottleTime), scheduler: DispatchQueue.main, latest: true)
-            .filter{
-                // require minimum characters for search
-                if $0.isEmpty || $0.count < HomeConstants.minimumSearchCharacters {
-                    // show empty result, query is empty or too short, api call not needed
-                    if $0.isEmpty {
-                        self.messageState = .emptySearchResult
-                    } else {
-                        self.messageState = .loaded
-                    }
-                    self.searchItems.removeAll()
-                    return false
-                } else {
-                    return true
-                }
-            }
-            .sink(receiveValue: {
-                // reset initial value for new fresh search
-                self.currentPage = HomeConstants.searchPageDefaultPage
-                // clear items before in the list
-                self.searchItems.removeAll()
-                // get new search data
-                self.searchInRepoNames(queryString: $0)
-                
-            })
-            .store(in: &cancellableSet)
     }
-    
-    
-    private func searchInRepoNames(queryString: String) {
+
+    private func handleSearchTextChange() {
+        // Cancel previous search task
+        searchTask?.cancel()
+
+        // Handle empty or too short search text
+        if searchText.isEmpty || searchText.count < HomeConstants.minimumSearchCharacters {
+            searchItems.removeAll()
+            messageState = searchText.isEmpty ? .emptySearchResult : .loaded
+            return
+        }
+
+        // Create new debounced search task
+        searchTask = Task {
+            // Debounce: wait for throttle time
+            try? await Task.sleep(nanoseconds: UInt64(HomeConstants.searchRepositoryThrottleTime * 1_000_000_000))
+
+            // Check if task was cancelled during sleep
+            guard !Task.isCancelled else { return }
+
+            // Reset for new search
+            currentPage = HomeConstants.searchPageDefaultPage
+            searchItems.removeAll()
+
+            // Execute search
+            await searchInRepoNames(queryString: searchText)
+        }
+    }
+
+    private func searchInRepoNames(queryString: String) async {
+        guard !Task.isCancelled else { return }
+
         isSearchingCurrentPage = true
-        
+
         // show loading only if it is fresh search start
         if searchItems.count == 0 {
             messageState = .loading
         }
-        
+
         print("searchInRepoNames() for search query \(searchText) for page \(currentPage)")
-        
-        // get data from api
-        gitHubRepository.getSearchResultInRepoName(queryString: queryString,
-                                                   perPage: HomeConstants.searchPageSize, pageNumber: currentPage)
-            .mapError({ (er) -> ApiResponseError in
-                print(er.message)
-                // display error on ui
-                print("searchInRepoNames() error \(er.message)")
-                self.messageState = .error(er.message)
-                return er
-            })
-            .sink(receiveCompletion: { _ in },
-                  receiveValue: { searchResponse in
-                    
-                    print("searchInRepoNames() Total search results count \(searchResponse.totalCount)")
-                    print("searchInRepoNames() current page results count \(searchResponse.items.count)")
-                    
-                    // special case when user searched some keyword and api is taking log time get data, but user clear the search text from search field, ignore the api result and show empty search result
-                    if self.searchText.isEmpty {
-                        print("searchInRepoNames() search query is empty ignore result.....")
-                        self.searchItems.removeAll()
-                        self.messageState = .emptySearchResult
-                        return
-                    }
-                    
-                    if searchResponse.totalCount <= 0 {
-                        // empty result send on ui
-                        self.messageState = .emptySearchResult
-                        return
-                    }
-                    // send the loaded search result on ui
-                    self.searchItems.append(contentsOf: searchResponse.items)
-                    // item count is less than page size, it means no more items in the search text pages
-                    self.isSearchDataAvailableCurrentPage = searchResponse.items.count >= HomeConstants.searchPageSize
-                    print("searchInRepoNames()  total count so far \(self.searchItems.count)")
-                    self.currentPage += 1
-                    self.isSearchingCurrentPage = false
-                    // change the state
-                    self.messageState = .loaded
-                  })
-            .store(in: &cancellableSet)
+
+        do {
+            // get data from api
+            let searchResponse = try await gitHubRepository.getSearchResultInRepoName(
+                queryString: queryString,
+                perPage: HomeConstants.searchPageSize,
+                pageNumber: currentPage
+            )
+
+            // Check if task was cancelled or search text changed
+            guard !Task.isCancelled else { return }
+
+            print("searchInRepoNames() Total search results count \(searchResponse.totalCount)")
+            print("searchInRepoNames() current page results count \(searchResponse.items.count)")
+
+            // special case when user searched some keyword and api is taking long time get data,
+            // but user clear the search text from search field, ignore the api result and show empty search result
+            if searchText.isEmpty {
+                print("searchInRepoNames() search query is empty ignore result.....")
+                searchItems.removeAll()
+                messageState = .emptySearchResult
+                return
+            }
+
+            if searchResponse.totalCount <= 0 {
+                // empty result send on ui
+                messageState = .emptySearchResult
+                return
+            }
+
+            // send the loaded search result on ui
+            searchItems.append(contentsOf: searchResponse.items)
+            // item count is less than page size, it means no more items in the search text pages
+            isSearchDataAvailableCurrentPage = searchResponse.items.count >= HomeConstants.searchPageSize
+            print("searchInRepoNames()  total count so far \(searchItems.count)")
+            currentPage += 1
+            isSearchingCurrentPage = false
+            // change the state
+            messageState = .loaded
+
+        } catch let error as ApiResponseError {
+            guard !Task.isCancelled else { return }
+            print(error.message)
+            print("searchInRepoNames() error \(error.message)")
+            messageState = .error(error.message)
+            isSearchingCurrentPage = false
+        } catch {
+            guard !Task.isCancelled else { return }
+            print("searchInRepoNames() error \(error.localizedDescription)")
+            messageState = .error(error.localizedDescription)
+            isSearchingCurrentPage = false
+        }
     }
 }
 
-// MARK:- pagination
+// MARK: - pagination
 extension HomeViewModel {
     func searchForNextPage(currentItem: SearchItem) {
         // search for the next page data if can search
@@ -125,17 +142,20 @@ extension HomeViewModel {
             searchNextPage()
         }
     }
-    
+
     private func searchNextPage() {
         // search next page data if not loading and data available
         guard !isSearchingCurrentPage && isSearchDataAvailableCurrentPage else {
             return
         }
-        searchInRepoNames(queryString: searchText)
+
+        Task {
+            await searchInRepoNames(queryString: searchText)
+        }
     }
 }
 
-// MARK:- message state form view model
+// MARK: - message state from view model
 extension HomeViewModel {
     enum MessageState {
         case loading

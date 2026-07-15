@@ -5,14 +5,13 @@
 //  Created by Dinakar Maurya on 2021/08/12.
 //
 
-//import SwiftUI
+import SwiftUI
 
-// only setup launcher using below if migrate to ios 14, done need Launch Folder inside AppConfig folder
-//@main
-//struct LauncherView: App {
-//    var body: some Scene {
-//        WindowGroup {
-//            SplashView()
-//        }
-//    }
-//}
+@main
+struct LauncherView: App {
+    var body: some Scene {
+        WindowGroup {
+            SplashView()
+        }
+    }
+}
