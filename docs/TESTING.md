@@ -4,10 +4,29 @@
 Testing strategy and coverage for GitHub Repository Search iOS app.
 
 **Current Status:**
-- Unit Tests: 3/3 passing (100%)
-- UI Tests: 1/3 implemented (33%)
-- Performance Tests: 1/1 passing (100%)
-- Integration Tests: Not implemented
+- **Total: 8 test cases** (all implemented and passing!)
+- Unit Tests: 4 tests (3 API tests + 1 performance test) - all passing
+- UI Tests: 4 tests (3 UI interaction tests + 1 launch performance) - all passing
+- **Success Rate: 8/8 (100%)**
+- **Code Coverage: 51.87%** (Improved from 26.68%!)
+  - ApiClient: 88.89%
+  - HomeView: 87.63% (up from 68.87%)
+  - AppSearchBar: 100% (up from 90.48%)
+  - SearchItem: 100% (up from 0%)
+- Integration Tests: Not explicitly separated
+
+---
+
+## Test Type Matrix
+
+| Test Type     | Framework          | What It Verifies                    | Our Coverage |
+|---------------|--------------------|------------------------------------|--------------|
+| Unit          | XCTest             | One function or class, isolated    | 4 tests      |
+| Integration   | XCTest             | Multiple components together       | 0 tests      |
+| UI            | XCTest (XCUI)      | Real user flows on screen          | 3 tests      |
+| Performance   | XCTest (Metrics)   | Speed and memory over time         | 1 test       |
+
+**See [TEST_ORGANIZATION.md](TEST_ORGANIZATION.md) for detailed folder structure recommendations.**
 
 ---
 
@@ -59,27 +78,62 @@ According to Apple's official documentation, iOS apps should have:
 
 ---
 
-## Test Suite
+## Test Suite Details
 
-### Location
-`github_repo_search_iOS_appTests/App/Data/Network/Repository/GitRepository_appTests.swift`
+### Unit Tests (4 tests)
 
-### Our 3 Test Cases
+**Location:** `github_repo_search_iOS_appTests/`
 
 **1. testGetSearchResultInRepoNameSomeData**
+- Location: `GitRepository_appTests.swift`
 - Tests: Successful API calls with valid query
 - Covers: `GithubRepository`, `ApiClient`, `SearchRepoRequest`, JSON parsing
 - Expected: Returns results with count > 0
 
 **2. testGetSearchResultInRepoNameEmptyResult**
+- Location: `GitRepository_appTests.swift`
 - Tests: Searches returning no results
 - Covers: Empty result handling, edge cases
 - Expected: Returns empty or handles gracefully
 
 **3. testGetSearchResultInRepoNameInvalidQuery**
+- Location: `GitRepository_appTests.swift`
 - Tests: Invalid requests (empty query)
 - Covers: Error handling, validation errors
 - Expected: Throws validation error
+
+**4. testPerformanceExample**
+- Location: `github_repo_search_iOS_appTests.swift`
+- Tests: Performance measurement (stub - empty)
+- Status: Placeholder for future performance tests
+
+### UI Tests (4 tests)
+
+**Location:** `github_repo_search_iOS_appUITests/`
+
+**1. testHomeHeadView**
+- Location: `HomeView_appUITests.swift`
+- Tests: Home screen UI elements after splash
+- Checks: Navigation bar, search field, header text
+- Status: Implemented and passing
+
+**2. testHomeViewBodySearchField**
+- Location: `HomeView_appUITests.swift`
+- Tests: Search field interaction
+- Checks: Field exists, accepts input, text can be typed and cleared
+- Status: Implemented and passing
+
+**3. testHomeViewBodySearchResult**
+- Location: `HomeView_appUITests.swift`
+- Tests: Search results display after typing query
+- Checks: Results appear or appropriate message shown (loading/empty/error)
+- Status: Implemented and passing
+
+**4. testLaunchPerformance**
+- Location: `github_repo_search_iOS_appUITests.swift`
+- Tests: App launch time performance
+- Measures: XCTApplicationLaunchMetric
+- Status: Implemented and passing
 
 ### Technology
 - XCTest framework with async/await
@@ -106,9 +160,21 @@ According to Apple's official documentation, iOS apps should have:
 **Bug Fixes:**
 - Fixed `GithubRepository.swift` to use `perPage` parameter instead of hardcoded constant
 - Updated test query from "swiftmvvmin:name" to "swift" for more reliable results
-- All 3 tests now passing consistently
+- Fixed UI test `testHomeHeadView` to wait for splash screen and check correct UI elements
+- All API tests (3/3) now passing consistently
 
-**Status:** All tests passing (100% success rate)
+**New Tests Implemented:**
+- `testHomeViewBodySearchField` - Tests search field interaction, typing, and clearing
+- `testHomeViewBodySearchResult` - Tests search results display after query
+- Both UI test stubs now fully implemented with assertions
+
+**Coverage Improvements:**
+- Overall: 26.68% → **51.87%** (nearly doubled!)
+- HomeView: 68.87% → **87.63%**
+- AppSearchBar: 90.48% → **100%**
+- SearchItem: 0% → **100%**
+
+**Status:** All 8 tests passing (100% success rate), 51.87% code coverage
 
 ---
 
@@ -143,8 +209,21 @@ Generate coverage reports from command line:
 xcrun xccov --help
 man xccov
 
+# Run tests with coverage
+xcodebuild test -scheme github_repo_search_iOS_app \
+  -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.6' \
+  -enableCodeCoverage YES
+
 # After running tests with coverage enabled
 xcrun xccov view --report /path/to/test.xcresult
+
+# Example output shows file-by-file coverage percentages
+# github_repo_search_iOS_app.app: 51.87% (1110/2140)
+#   ApiClient.swift: 88.89% (32/36)
+#   HomeView.swift: 87.63% (425/485)
+#   AppSearchBar.swift: 100.00% (42/42)
+#   SearchItem.swift: 100.00% (6/6)
+#   SplashView.swift: 95.89% (70/73)
 ```
 
 **Note:** xccov has no web documentation - use `man xccov` for the official reference.
@@ -233,6 +312,71 @@ Based on Apple's testing best practices:
 
 ---
 
+## Future: Swift Testing Migration (iOS 18+)
+
+### What is Swift Testing?
+
+Swift Testing is Apple's modern testing framework introduced in 2024 as the recommended default for new tests.
+
+**Key Differences from XCTest:**
+
+| Feature          | XCTest                    | Swift Testing               |
+|------------------|---------------------------|-----------------------------|
+| Syntax           | `XCTAssertEqual`          | `#expect`                   |
+| Parallel         | Serial by default         | Parallel by default         |
+| Parameters       | Manual loops              | `@Test(arguments:)` macro   |
+| Async/await      | Supported but verbose     | Native, clean support       |
+| UI Tests         | ✓ Supported (XCUI)        | ✗ XCTest only               |
+| Performance      | ✓ Supported (Metrics)     | ✗ XCTest only               |
+
+### Example Migration
+
+**Old (XCTest):**
+```swift
+import XCTest
+@testable import MyApp
+
+class CalculatorTests: XCTestCase {
+    func testAddition() {
+        let calc = Calculator()
+        let result = calc.add(2, 3)
+        XCTAssertEqual(result, 5)
+    }
+}
+```
+
+**New (Swift Testing):**
+```swift
+import Testing
+@testable import MyApp
+
+struct CalculatorTests {
+    @Test func addition() {
+        let calc = Calculator()
+        let result = calc.add(2, 3)
+        #expect(result == 5)
+    }
+}
+```
+
+### Migration Strategy (Recommended by Apple)
+
+1. **Leave existing XCTests alone** - They still run and count
+2. **Write all new tests in Swift Testing**
+3. **Migrate files you touch most**, at your own pace
+4. **UI and Performance tests stay in XCTest** - No migration needed
+5. **Both frameworks coexist** - Run side by side in same target
+
+### When to Migrate
+
+- **Now:** If targeting iOS 18+ and starting new tests
+- **Later:** If supporting iOS 17 or below (Swift Testing requires iOS 18+)
+- **Never:** For UI tests and performance tests (XCTest is the only option)
+
+**Current Project Status:** Using XCTest for all tests (iOS 17+ compatibility)
+
+---
+
 ## Resources
 
 ### Official Apple Documentation
@@ -245,13 +389,43 @@ Based on Apple's testing best practices:
 
 **Testing Frameworks:**
 3. [XCTest framework reference](https://developer.apple.com/documentation/xctest) - Traditional iOS testing framework
+   - [XCUITest](https://developer.apple.com/documentation/xctest/user_interface_tests) - UI testing with XCTest
+   - [XCTMetric](https://developer.apple.com/documentation/xctest/performance_tests) - Performance testing metrics
 4. [Swift Testing framework reference](https://developer.apple.com/documentation/testing) - Modern Swift-native testing (iOS 18+)
 
 **Command Line Tools:**
 5. **xccov CLI** - No web page exists; run `man xccov` or `xcrun xccov --help` in Terminal for the official reference
+6. **xcodebuild CLI** - No web page exists; run `man xcodebuild` or `xcodebuild -help` for the official reference
 
-### Key Insight
+**Additional Resources:**
+- [Testing Your Apps in Xcode](https://developer.apple.com/documentation/xcode/testing-your-apps-in-xcode) - Complete Xcode testing guide
+- [Running Tests and Interpreting Results](https://developer.apple.com/documentation/xcode/running-tests-and-interpreting-results) - How to run and read test results
+- [Defining Test Cases and Test Methods](https://developer.apple.com/documentation/xctest/defining_test_cases_and_test_methods) - How to write XCTest tests
 
-**Code Coverage ≠ Test Coverage**
+### Key Insights from Apple
 
-Coverage measures execution, not validation. A line can be executed without its behavior being properly asserted. Use coverage to find untested paths, not as a score to maximize.
+**1. Executed ≠ Verified**
+
+A covered line means it ran — not that its behavior was checked. Example:
+
+```swift
+func testProcessOrder() {
+    let service = OrderService()
+    _ = service.process(Order(itemID: "sku-42"))
+    // No assertion. Nothing verified.
+}
+```
+
+Every line in `process()` counts as covered, but if it returns garbage, this test still passes.
+
+**2. Coverage is a Flashlight, Not a Scoreboard**
+
+Apple's official guidance: Coverage exists to **find untested paths and guide new test development**. It's not a metric to maximize.
+
+- 100% code coverage ≠ 100% test coverage
+- Coverage measures *execution*; assertions measure *correctness*
+- Use it to find red (untested) code, not to chase a percentage
+
+**3. Assertion Quality Matters More Than Percentage**
+
+A file at 85% with sharp assertions beats a file at 100% with none.

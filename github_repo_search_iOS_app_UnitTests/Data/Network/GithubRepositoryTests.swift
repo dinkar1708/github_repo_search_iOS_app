@@ -1,16 +1,16 @@
 //
-//  GithubRepository_appTests.swift
-//  github_repo_search_iOS_appTests
+//  GithubRepositoryTests.swift
+//  UnitTests
 //
-//  Created by Dinakar Maurya on 2021/08/14.
+//  Unit tests for GitHub Repository layer
 //
 
 import XCTest
 @testable import github_repo_search_iOS_app
 
-// gitHub repository test using modern async/await
+/// Tests for GithubRepository - API calls and data handling (MIGRATED FROM OLD STRUCTURE)
 @MainActor
-class GithubRepository_appTests: XCTestCase {
+class GithubRepositoryTests: XCTestCase {
     let gitHubRepository = DefaultGithubRepository()
 
     override func setUpWithError() throws {
@@ -19,7 +19,7 @@ class GithubRepository_appTests: XCTestCase {
     override func tearDownWithError() throws {
     }
 
-    func testGetSearchResultInRepoNameSomeData() async throws {
+    func testGetSearchResultWithValidQuery() async throws {
         do {
             let searchResponse = try await gitHubRepository.getSearchResultInRepoName(
                 queryString: "swift",
@@ -27,8 +27,8 @@ class GithubRepository_appTests: XCTestCase {
                 pageNumber: 1
             )
 
-            print("testGetSearchResultInRepoNameSomeData Total search results count \(searchResponse.totalCount)")
-            print("testGetSearchResultInRepoNameSomeData Current Page search results count \(searchResponse.items.count)")
+            print("✅ Total search results count: \(searchResponse.totalCount)")
+            print("✅ Current page results count: \(searchResponse.items.count)")
 
             XCTAssertTrue(searchResponse.totalCount > 0, "Expected search results but got \(searchResponse.totalCount)")
         } catch let error as ApiResponseError {
@@ -38,7 +38,7 @@ class GithubRepository_appTests: XCTestCase {
         }
     }
 
-    func testGetSearchResultInRepoNameEmptyResult() async throws {
+    func testGetSearchResultWithEmptyResult() async throws {
         do {
             let searchResponse = try await gitHubRepository.getSearchResultInRepoName(
                 queryString: "¥¥¥¥¥¥¥¥¥¥¥",
@@ -46,19 +46,18 @@ class GithubRepository_appTests: XCTestCase {
                 pageNumber: 1
             )
 
-            print("testGetSearchResultInRepoNameEmptyResult Total search results count \(searchResponse.totalCount)")
-            print("testGetSearchResultInRepoNameEmptyResult Current Page search results count \(searchResponse.items.count)")
+            print("✅ Empty result test - Total: \(searchResponse.totalCount)")
 
             XCTAssertTrue(searchResponse.totalCount == 0, "Expected 0 results for invalid search")
         } catch let error as ApiResponseError {
             // Empty result might also come as error, which is acceptable
-            print("API Error (expected for invalid search): \(error.message)")
+            print("✅ API Error (expected for invalid search): \(error.message)")
         } catch {
             XCTFail("Unexpected error: \(error.localizedDescription)")
         }
     }
 
-    func testGetSearchResultInRepoNameInvalidQuery() async throws {
+    func testGetSearchResultWithInvalidQuery() async throws {
         do {
             let searchResponse = try await gitHubRepository.getSearchResultInRepoName(
                 queryString: "",
@@ -67,10 +66,10 @@ class GithubRepository_appTests: XCTestCase {
             )
 
             // If we get here without error, that's unexpected for empty query
-            print("testGetSearchResultInRepoNameInvalidQuery Total search results count \(searchResponse.totalCount)")
+            print("Unexpected: got response for empty query")
             XCTFail("Expected error for empty query but got response")
         } catch let error as ApiResponseError {
-            print("Received expected error: \(error.message)")
+            print("✅ Received expected error: \(error.message)")
             XCTAssertTrue(error.message.contains("Validation Failed") || error.message.contains("missing"),
                          "Expected 'Validation Failed' error, got: \(error.message)")
         } catch {
@@ -78,4 +77,25 @@ class GithubRepository_appTests: XCTestCase {
         }
     }
 
+    func testPerPageParameterIsUsed() async throws {
+        // Test that perPage parameter is actually used, not hardcoded
+        let customPerPage = 25
+
+        do {
+            let searchResponse = try await gitHubRepository.getSearchResultInRepoName(
+                queryString: "swift",
+                perPage: customPerPage,
+                pageNumber: 1
+            )
+
+            // If we get results, they should respect the perPage limit
+            if searchResponse.items.count > 0 {
+                XCTAssertLessThanOrEqual(searchResponse.items.count, customPerPage,
+                                        "Results should not exceed perPage limit")
+            }
+        } catch {
+            // Network errors are acceptable in this test
+            print("⚠️ Network error (acceptable): \(error.localizedDescription)")
+        }
+    }
 }

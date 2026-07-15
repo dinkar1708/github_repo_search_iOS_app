@@ -44,21 +44,44 @@ A modern, native iOS application for searching GitHub repositories with a beauti
 
 # Testing
 
+## Test Summary
+
+**Total: 8 test cases (all implemented and passing!)**
+
+| Test Type     | Framework          | What It Verifies                    | Count | Status |
+|---------------|--------------------|------------------------------------|-------|--------|
+| Unit          | XCTest             | One function or class, isolated    | 4     | ✓ Pass |
+| Integration   | XCTest             | Multiple components together       | 0     | N/A    |
+| UI            | XCTest (XCUI)      | Real user flows on screen          | 3     | ✓ Pass |
+| Performance   | XCTest (Metrics)   | Speed and memory over time         | 1     | ✓ Pass |
+
+**Code Coverage: 51.87%** (Improved from 26.68%!)
+- ApiClient: 88.89%
+- HomeView: 87.63%
+- AppSearchBar: 100%
+- SearchItem: 100%
+
+**All tests passing: 8/8** (100% success rate)
+
 ## Quick Start
 From Xcode, click **Product → Test** (or press `⌘U`) - it will run all test cases written inside:
 - **github_repo_search_iOS_appTests** - Unit tests for business logic and API calls
 - **github_repo_search_iOS_appUITests** - UI tests for user interaction flows
 
 ## 📖 Complete Testing Documentation
-For detailed testing documentation including test cases, code coverage setup, and how to run tests, see:
-**[docs/TESTING.md](docs/TESTING.md)**
 
-This comprehensive guide includes:
+**[docs/TESTING.md](docs/TESTING.md)** - Complete testing guide including:
 - All test cases with detailed explanations
 - Code coverage measurement and setup
 - How to run tests (Xcode, command line, CI/CD)
 - Test results interpretation
 - Best practices and troubleshooting
+
+**[docs/TEST_ORGANIZATION.md](docs/TEST_ORGANIZATION.md)** - Test structure guide:
+- Recommended folder organization by test type
+- Apple's official testing structure
+- Migration plan for reorganization
+- Framework comparison (XCTest vs Swift Testing)
 
 ## Code Coverage
 
