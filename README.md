@@ -27,85 +27,62 @@ A modern, native iOS application for searching GitHub repositories with a beauti
 <img width="327" alt="Screenshot 2024-02-04 at 20 56 41" src="https://github.com/dinkar1708/github_repo_search_iOS_app/assets/14831652/a793a4db-8ed3-4ba5-aae4-c5c223c88356">
 
 
-## Modern UI Features
+## UI Design
 
-### Home Screen
-The home screen features a clean, modern design with several key elements:
-- Gradient background with system-adaptive colors that respond to light and dark mode
-- Enhanced search header with clear title and subtitle
-- Modern search bar with real-time feedback as you type
-- Results counter showing the number of repositories found
-- Beautiful empty states for different scenarios:
-  - Initial state shows "Start Searching" with a book icon
-  - No results state displays "No Repositories Found" with helpful suggestions
-  - Error state provides detailed error information
-  - Loading state shows an animated spinner with status text
-- Infinite scroll pagination for seamless browsing of search results
+**Home Screen:**
+- Gradient background with adaptive dark mode
+- Real-time search with debouncing
+- Rich repository cards with avatars, stats, and descriptions
+- Empty states for initial, no results, errors, and loading
+- Infinite scroll pagination
 
-### Repository Cards
-Each repository is displayed as a rich card containing:
-- Owner avatar displayed as a circular image with AsyncImage loading
-- Repository name in bold, prominent text
-- Owner username as secondary information
-- Two-line preview of the repository description
-- Language badge color-coded by programming language (Swift: Orange, Python: Blue, JavaScript: Yellow, etc.)
-- Statistics row showing:
-  - Star count with star icon
-  - Fork count with fork icon
-  - Watcher count with eye icon
-- Modern card design with shadows, rounded corners, and clean spacing
-- Chevron indicator for navigation
+**Detail View:**
+- Hero section with owner avatar and description
+- Statistics grid (stars, forks, watchers, issues)
+- Repository information (branch, license, dates, features)
+- Action buttons (open in Safari, copy clone URL)
 
-### Repository Detail View
-The detail view provides comprehensive information about each repository:
+# Testing
 
-Hero Section:
-- Large owner avatar (100px circular image)
-- Repository name and full path
-- Complete description
-- Language tag with color coding
+## Quick Start
+From Xcode, click **Product → Test** (or press `⌘U`) - it will run all test cases written inside:
+- **github_repo_search_iOS_appTests** - Unit tests for business logic and API calls
+- **github_repo_search_iOS_appUITests** - UI tests for user interaction flows
 
-Statistics Grid (2x2 layout):
-- Stars displayed in yellow
-- Forks displayed in blue
-- Watchers displayed in green
-- Open issues displayed in red
+## 📖 Complete Testing Documentation
+For detailed testing documentation including test cases, code coverage setup, and how to run tests, see:
+**[docs/TESTING.md](docs/TESTING.md)**
 
-Repository Information Card:
-- Owner details and profile
-- Repository type (public/private)
-- Default branch name
-- Homepage URL if available
-- License information
-- Repository size in KB
-- Creation and last update dates
-- Feature badges showing Issues, Wiki, and Pages availability
+This comprehensive guide includes:
+- All test cases with detailed explanations
+- Code coverage measurement and setup
+- How to run tests (Xcode, command line, CI/CD)
+- Test results interpretation
+- Best practices and troubleshooting
 
-Owner Details Section:
-- Owner avatar and username
-- Account type (User or Organization)
-- Site admin indicator if applicable
+## Code Coverage
 
-Action Buttons:
-- Open in GitHub button - Opens repository directly in Safari
-- Copy Clone URL button - Copies the git clone URL to clipboard
+**Quick Setup:**
+1. Edit Scheme (`⌘<`) → Test → Options → Enable "Code Coverage"
+2. Run tests (`⌘U`)
+3. View results: Report Navigator (`⌘9`) → Coverage tab
 
-## Implemented Features
+**Coverage Goals:**
+- Critical paths (API, business logic): 90-100%
+- View models: 70-90%
+- Overall target: 70%+
 
-- Splash screen with app branding
-- Home screen with modern search interface and rich repository cards
-- Repository details screen with comprehensive information display
-- Unit tests covering business logic
-- UI tests for user interaction flows
+**View Coverage:**
+- Green = well tested (>80%)
+- Yellow = moderate (40-80%)
+- Red = needs tests (<40%)
 
-# Testing From xcode click product-> Test - it will run all test case wrote inside below
-- github_repo_search_iOS_appTests
-- github_repo_search_iOS_appUITests
+For detailed coverage documentation, command line usage, and best practices, see **[docs/TESTING.md](docs/TESTING.md)**
 ## Requirements
 
-- Xcode 14.0 or later (latest version recommended)
-- iOS 15.0 or later (minimum deployment target)
-- Swift 5.5 or later (includes async/await support)
+- **Xcode 15.0 or later** (latest version recommended)
+- **iOS 17.0 or later** (minimum deployment target)
+- **Swift 5.9 or later** (includes modern concurrency and Observation framework)
 
 ### How to run
 - Clone this repo
@@ -114,66 +91,36 @@ Action Buttons:
 
 ## Technology Stack
 
-### Architecture
-The application follows the MVVM (Model-View-ViewModel) design pattern for clean separation of concerns. The data layer uses the Repository pattern for abstraction, and the Combine framework handles reactive programming for smooth data flow throughout the app.
+**Language:** Swift 5.9+ with modern concurrency
 
-### UI Framework
-The entire user interface is built with SwiftUI using modern declarative UI patterns. Key UI components include:
-- AsyncImage for native asynchronous image loading
-- LazyVGrid for efficient grid layouts
-- SF Symbols for consistent system icons
+**UI:** SwiftUI with @main App lifecycle, AsyncImage, LazyVGrid, SF Symbols
 
-### Modern iOS Features
-The app leverages several modern iOS capabilities:
-- Environment values such as @Environment(\.openURL) for handling external links
-- Adaptive colors providing full dark mode support
-- System backgrounds following proper iOS design language
-- Accessibility features including VoiceOver compatibility with semantic views
+**Architecture:** MVVM + Repository pattern
 
-### Language and Tools
-Built with Swift 5.5 and later, utilizing modern Swift features. The codebase is structured to support async/await patterns for future enhancements.
+**Networking:** URLSession with async/await, type-safe ApiClient
 
-# Usages 
-- Follow below folder structure and use the files 
-## App - All features and data
-- UI - screens UI
-  - Splash
-  - Home
-  - Search Items Details
-- Util - utils file reusable
-- Data - Model class and data to be used in app, Network, Repository api calls etc.
-- Resources - Image and localization files
+**State:** @Observable macro (iOS 17+), @State, automatic change tracking
 
-## AppConfig - basics configuration launch time of app
+**Features:** Task-based debouncing, @MainActor, dark mode, accessibility, multi-language (EN/JP)
 
-# MEMO / NOTES
+## Project Structure
 
-## Assumptions
-- Need to check search result api all keys validations eg. if nil then need to change the declaration of variable as nil/?
+```
+App/
+├── UI/           # Splash, Home, Details screens
+├── Data/         # Models, Network, Repository
+├── Util/         # Reusable utilities
+└── Resources/    # Images, localization
 
-## Env type
-- Debug - for development purpose
-- Inhouse - for testing purpose
-- Release - release on app store
+AppConfig/        # Launch configuration
+```
 
-## Multi Language 
-- English
-- Japanese
+## Platform Support
 
-## Theme Support available
-- Light
-- Dark
-
-## Screen rotation handling implemented
-- Design UI to handle / display UI on both portrait and landscape mode properly
-
-## Multiple screen size implemented - Iphone, iPad
-- Verified app on iPAD and different small and big size screens
-
-## Verification of app performance / Profile
-- Verify memory leaks, extra view hierarch etc. - https://developer.apple.com/documentation/xcode/diagnosing-and-resolving-bugs-in-your-running-app
-
-## Documentation and code commenting for understanding other developer
+**Languages:** English, Japanese
+**Themes:** Light, Dark (adaptive)
+**Devices:** iPhone, iPad (universal)
+**Orientations:** Portrait, Landscape
 
 
 # API handling - 
@@ -222,27 +169,21 @@ https://api.github.com/search/repositories/?q=%22swiftui%22
 }
 ```
 
-## Recent Improvements
+## Key Highlights
 
-### UI and UX Enhancements
-The application recently underwent a complete UI modernization to align with iOS 15+ design language. Key improvements include:
-- Rich repository cards displaying avatars, descriptions, and statistics
-- Comprehensive detail view organized into 5 distinct sections
-- Beautiful empty states tailored for different scenarios (initial, no results, errors, loading)
-- Modern navigation with proper title styles and hierarchy
-- Action buttons for opening repositories in Safari and copying clone URLs
-- Language color coding for visual programming language identification
-- Professional card-based layout with shadows and proper spacing
+**Modern iOS 17+ Features:**
+- async/await throughout (no third-party frameworks)
+- @Observable macro for reactive state
+- Task-based debouncing and concurrency
+- @MainActor for thread-safe UI updates
+- SwiftUI @main App lifecycle
 
-### Technical Updates
-Several technical improvements were implemented:
-- Updated iOS deployment target to 15.0 to leverage latest platform features
-- Integrated AsyncImage for native asynchronous image loading
-- Implemented LazyVGrid layouts for efficient statistics display
-- Added environment-based URL handling for modern link opening
-- Applied semantic colors throughout for full dark mode support
-- Fixed duplicate search icon issue
-- Resolved duplicate API request issue when typing
+**Architecture:**
+- MVVM design pattern
+- Repository pattern for data abstraction
+- Type-safe networking with URLSession
+- Structured error handling
+- Clean separation of concerns
 
 ## TODO List
 
