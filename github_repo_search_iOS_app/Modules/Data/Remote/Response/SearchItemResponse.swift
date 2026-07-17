@@ -3,12 +3,14 @@
 //  github_repo_search_iOS_app
 //
 //  Created by Dinakar Maurya on 2021/08/12.
+//  
 //
 
 /**
  Search item response data
+ Sendable conformance for thread safety
  */
-struct SearchItemResponse: Decodable, ApiResponse {
+struct SearchItemResponse: Decodable, ApiResponse, Sendable {
     let totalCount: Int
     let incompleteResults: Bool
     let items: [SearchItem]

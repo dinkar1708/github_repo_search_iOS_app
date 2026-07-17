@@ -3,6 +3,7 @@
 //  github_repo_search_iOS_app
 //
 //  Created by Dinakar Maurya on 2021/08/12.
+//  
 //
 
 import Foundation
@@ -10,33 +11,53 @@ import SwiftUI
 
 /**
  Reusable api client for api call using modern Swift concurrency
+ No @MainActor, Sendable conformance, HTTP status validation
  */
-struct ApiClient {
-    struct Response<T> {
+struct ApiClient: Sendable {
+    struct Response<T>: Sendable where T: Sendable {
         let value: T
         let response: URLResponse
+        let statusCode: Int
     }
 
-    @MainActor
-    func run<T: Decodable>(_ request: URLRequest) async throws -> Response<T> {
+    private let session: URLSession
+
+    init(timeoutInterval: TimeInterval = 30) {
+        let config = URLSessionConfiguration.default
+        config.timeoutIntervalForRequest = timeoutInterval
+        config.timeoutIntervalForResource = timeoutInterval * 2
+        config.waitsForConnectivity = true
+        self.session = URLSession(configuration: config)
+    }
+
+    func run<T: Decodable & Sendable>(_ request: URLRequest) async throws -> Response<T> {
         print("APIClient API URL \(String(describing: request.url))")
         print("APIClient API method \(String(describing: request.httpMethod))")
         print("APIClient API json body")
         print(request.httpBody?.prettyJson ?? "")
 
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await session.data(for: request)
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw ApiResponseError(message: "Invalid response type")
+            }
 
             print("APIClient API URL incoming: \(String(describing: request.url))")
-            print("APIClient API response incoming: ")
-            // uncomment to see the data, lots of data so commenting it
-            // print(String(data: data, encoding: .utf8) ?? "")
+            print("APIClient API status: \(httpResponse.statusCode)")
+
+            // Validate HTTP status code
+            guard (200...299).contains(httpResponse.statusCode) else {
+                let message = "HTTP \(httpResponse.statusCode)"
+                print("APIClient Error: \(message)")
+                throw ApiResponseError(message: message)
+            }
 
             do {
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .formatted(Formatter.iso8601)
                 let value = try decoder.decode(T.self, from: data)
-                return Response(value: value, response: response)
+                return Response(value: value, response: response, statusCode: httpResponse.statusCode)
             } catch {
                 print("APIClient Error : Converting to model error!, JSONDecoder decode failed!, parsing custom error...")
                 print(error)

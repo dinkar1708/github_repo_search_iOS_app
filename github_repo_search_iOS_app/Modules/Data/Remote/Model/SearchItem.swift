@@ -3,14 +3,16 @@
 //  github_repo_search_iOS_app
 //
 //  Created by Dinakar Maurya on 2021/08/12.
+//  
 //
 
 import Foundation
 
 /**
  Search item data fields same as json keys
+ Sendable conformance for thread safety
  */
-struct SearchItem: Decodable, Hashable, Identifiable {
+struct SearchItem: Decodable, Hashable, Identifiable, Sendable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(self.id)
     }

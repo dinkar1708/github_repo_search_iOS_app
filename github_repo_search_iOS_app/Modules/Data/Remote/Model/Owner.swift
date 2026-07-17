@@ -3,12 +3,14 @@
 //  github_repo_search_iOS_app
 //
 //  Created by Dinakar Maurya on 2021/08/12.
+//  
 //
 
 /**
  Owner keys same as json
+ Sendable conformance for thread safety
  */
-struct Owner: Decodable {
+struct Owner: Decodable, Sendable {
     let login: String
     let id: Int
     let nodeID: String

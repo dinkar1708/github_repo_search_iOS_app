@@ -3,13 +3,15 @@
 //  github_repo_search_iOS_app
 //
 //  Created by Dinakar Maurya on 2021/08/12.
+//  
 //
 
 import Foundation
 /**
  Reusable api error response type
+ Sendable conformance for thread safety
  */
-struct ApiResponseError: Error, Decodable {
+struct ApiResponseError: Error, Decodable, Sendable {
     // handle error when errors is not null and null both
     var errors: [ApiError]?
     let message: String
@@ -23,8 +25,9 @@ struct ApiResponseError: Error, Decodable {
 
 /**
  Api error details
+ Sendable conformance for thread safety
  */
-struct ApiError: Decodable {
+struct ApiError: Decodable, Sendable {
     let message: String
     let resource: String
     let field: String
