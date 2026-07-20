@@ -27,7 +27,10 @@ struct FavoritesView: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                .padding()
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+                .padding(.bottom, 8)
+                .background(Color(UIColor.systemBackground))
 
                 // Content
                 Group {
@@ -51,7 +54,9 @@ struct FavoritesView: View {
                         } else {
                             List {
                                 ForEach(favoritesManager.favoriteRepositories) { favorite in
-                                    FavoriteRepositoryCell(favorite: favorite)
+                                    NavigationLink(destination: SearchItemDetailsView(searchItem: favorite.toSearchItem())) {
+                                        FavoriteRepositoryCell(favorite: favorite)
+                                    }
                                 }
                                 .onDelete(perform: deleteRepositoryFavorites)
                             }
@@ -61,6 +66,7 @@ struct FavoritesView: View {
                 }
             }
             .navigationTitle("Favorites")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 if (selectedType == .users && !favoritesManager.favoriteUsers.isEmpty) ||
                    (selectedType == .repositories && !favoritesManager.favoriteRepositories.isEmpty) {
@@ -166,7 +172,6 @@ struct FavoriteUserCell: View {
 // MARK: - Favorite Repository Cell
 struct FavoriteRepositoryCell: View {
     let favorite: FavoriteRepository
-    @State private var favoritesManager = FavoritesManager.shared
 
     var body: some View {
         HStack(spacing: 12) {
@@ -226,20 +231,10 @@ struct FavoriteRepositoryCell: View {
 
             Spacer()
 
-            Button(action: {
-                favoritesManager.removeFavoriteRepository(repositoryId: favorite.id)
-            }) {
-                Image(systemName: "star.fill")
-                    .foregroundColor(.yellow)
-            }
+            Image(systemName: "star.fill")
+                .foregroundColor(.yellow)
         }
         .padding(.vertical, 8)
-        .contentShape(Rectangle())
-        .onTapGesture {
-            if let url = URL(string: favorite.htmlUrl) {
-                UIApplication.shared.open(url)
-            }
-        }
     }
 
     private func languageColor(for language: String) -> Color {
@@ -278,7 +273,8 @@ struct EmptyFavoritesView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
         }
-        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.top, 60)
     }
 }
 
