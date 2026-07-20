@@ -68,9 +68,19 @@ For complete API specs and cross-platform guidelines, see the Android repository
 </div>
 
 
-# Folder structure
-<img width="349" alt="Screenshot 2024-02-04 at 20 56 26" src="https://github.com/dinkar1708/github_repo_search_iOS_app/assets/14831652/2d5da198-eabb-40bd-84cf-4e1893ddef57">
-<img width="327" alt="Screenshot 2024-02-04 at 20 56 41" src="https://github.com/dinkar1708/github_repo_search_iOS_app/assets/14831652/a793a4db-8ed3-4ba5-aae4-c5c223c88356">
+## Project Folder Structure
+
+The project follows a modular architecture with clear separation between data, features, and utilities:
+
+<div align="center">
+  <img src="docs/images/project-structure.png" alt="Xcode Project Structure" width="600"/>
+</div>
+
+**Main Components:**
+- **Modules/** - Core application modules (Data, Feature, Util)
+- **AppConfig/** - App configuration and navigation
+- **Resource/** - Assets, colors, localization files
+- **Tests/** - Unit tests, UI tests, Integration tests, Performance tests
 
 
 ## App Structure
@@ -138,12 +148,6 @@ From Xcode, click **Product → Test** (or press `⌘U`) - it will run all test 
 - Test results interpretation
 - Best practices and troubleshooting
 
-**[docs/TEST_ORGANIZATION.md](docs/TEST_ORGANIZATION.md)** - Test structure guide:
-- Recommended folder organization by test type
-- Apple's official testing structure
-- Migration plan for reorganization
-- Framework comparison (XCTest vs Swift Testing)
-
 ## Code Coverage
 
 **Quick Setup:**
@@ -162,16 +166,6 @@ From Xcode, click **Product → Test** (or press `⌘U`) - it will run all test 
 - Red = needs tests (<40%)
 
 For detailed coverage documentation, command line usage, and best practices, see **[docs/TESTING.md](docs/TESTING.md)**
-
-## Additional Documentation
-
-The following documentation files explain implementation details:
-
-- **BUILD_SUCCESS.md** - Complete build and implementation summary
-- **DEBOUNCE_FIX.md** - How debouncing was fixed for user search
-- **SIMULATOR_WARNINGS_EXPLAINED.md** - Analysis of iOS simulator warnings (all harmless)
-- **DATA_PERSISTENCE_EXPLAINED.md** - Why UserDefaults is used instead of SwiftData
-- **XCODE_BUILD_STEPS.md** - Step-by-step guide for building the project
 
 ## Requirements
 
@@ -258,13 +252,20 @@ All API calls use async/await with proper error handling.
 
 ## Recent Updates (July 2026)
 
-Completed features:
-- User search with debouncing
-- User profile view with repository list
-- Favorites feature with UserDefaults persistence (Users AND Repositories)
-- Segmented control in Favorites tab to switch between Users/Repositories
-- Favorite button on repository cards
-- Favorite button on user profile screen
+**Latest:**
+- ✓ Repository favorites with in-app navigation (repositories open in details screen, not browser)
+- ✓ User favorites with profile navigation
+- ✓ Segmented control in Favorites tab (Users/Repositories)
+- ✓ Favorite button on repository details screen (not list cards)
+- ✓ Favorite button on user profile screen
+- ✓ Compact UI improvements (inline navigation, removed duplicate chevrons)
+- ✓ 10 app screenshots (8 light mode, 2 dark mode)
+- ✓ Documentation simplified (FEATURES.md, TESTING.md)
+- ✓ Cross-references to Android master documentation
+
+**Earlier:**
+- User search with 800ms debouncing
+- Repository search with 3-second debouncing
 - Settings screen with dark mode and language selection
 - 4-tab navigation (Users, Repositories, Favorites, Settings)
 - Debounce fix for smooth searching without cancellation errors
@@ -272,8 +273,16 @@ Completed features:
 
 ## TODO List
 
+**Completed:**
 - [x] Add repository favorites functionality (COMPLETED July 2026)
 - [x] Add segmented control for Users/Repositories in Favorites tab (COMPLETED July 2026)
+- [x] Move favorite button from list to details screen (COMPLETED July 2026)
+- [x] Fix favorites navigation to open in-app (COMPLETED July 2026)
+- [x] UI improvements: compact navigation, remove duplicate chevrons (COMPLETED July 2026)
+- [x] Add app screenshots to documentation (COMPLETED July 2026)
+- [x] Simplify documentation structure (COMPLETED July 2026)
+
+**Pending:**
 - [ ] Add unit tests for FavoritesManager (repository favorites)
 - [ ] Add unit tests for new ViewModels (UserSearchViewModel, UserProfileViewModel)
 - [ ] Add UI tests for new features (User Search, Favorites with repositories)
