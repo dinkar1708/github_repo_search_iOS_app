@@ -44,17 +44,132 @@ struct FavoriteRepository: Codable, Identifiable {
     let forksCount: Int
     let htmlUrl: String
 
+    // Additional fields needed for SearchItem reconstruction
+    let ownerId: Int
+    let cloneUrl: String
+    let watchers: Int
+    let openIssues: Int
+    let createdAt: Date?
+
     init(from searchItem: SearchItem) {
         self.id = searchItem.id
         self.name = searchItem.name
         self.fullName = searchItem.fullName
         self.ownerLogin = searchItem.owner.login
         self.ownerAvatarUrl = searchItem.owner.avatarURL
+        self.ownerId = searchItem.owner.id
         self.description = searchItem.itemDescription
         self.language = searchItem.language
         self.stargazersCount = searchItem.stargazersCount
         self.forksCount = searchItem.forksCount
         self.htmlUrl = searchItem.htmlURL
+        self.cloneUrl = searchItem.cloneURL
+        self.watchers = searchItem.watchers
+        self.openIssues = searchItem.openIssues
+        self.createdAt = searchItem.createdAt
+    }
+
+    /// Convert FavoriteRepository back to SearchItem for navigation
+    func toSearchItem() -> SearchItem {
+        // Create a minimal Owner object
+        let owner = Owner(
+            login: ownerLogin,
+            id: ownerId,
+            nodeID: "",
+            avatarURL: ownerAvatarUrl,
+            gravatarID: "",
+            url: "",
+            htmlURL: "",
+            followersURL: "",
+            followingURL: "",
+            gistsURL: "",
+            starredURL: "",
+            subscriptionsURL: "",
+            organizationsURL: "",
+            reposURL: "",
+            eventsURL: "",
+            receivedEventsURL: "",
+            type: "User",
+            siteAdmin: false
+        )
+
+        // Create SearchItem with all required fields
+        return SearchItem(
+            id: id,
+            nodeID: "",
+            name: name,
+            fullName: fullName,
+            itemPrivate: false,
+            owner: owner,
+            htmlURL: htmlUrl,
+            itemDescription: description,
+            fork: false,
+            url: "",
+            forksURL: "",
+            keysURL: "",
+            collaboratorsURL: "",
+            teamsURL: "",
+            hooksURL: "",
+            issueEventsURL: "",
+            eventsURL: "",
+            assigneesURL: "",
+            branchesURL: "",
+            tagsURL: "",
+            blobsURL: "",
+            gitTagsURL: "",
+            gitRefsURL: "",
+            treesURL: "",
+            statusesURL: "",
+            languagesURL: "",
+            stargazersURL: "",
+            contributorsURL: "",
+            subscribersURL: "",
+            subscriptionURL: "",
+            commitsURL: "",
+            gitCommitsURL: "",
+            commentsURL: "",
+            issueCommentURL: "",
+            contentsURL: "",
+            compareURL: "",
+            mergesURL: "",
+            archiveURL: "",
+            downloadsURL: "",
+            issuesURL: "",
+            pullsURL: "",
+            milestonesURL: "",
+            notificationsURL: "",
+            labelsURL: "",
+            releasesURL: "",
+            deploymentsURL: "",
+            createdAt: createdAt,
+            updatedAt: nil,
+            pushedAt: nil,
+            gitURL: "",
+            sshURL: "",
+            cloneURL: cloneUrl,
+            svnURL: "",
+            homepage: nil,
+            size: 0,
+            stargazersCount: stargazersCount,
+            watchersCount: watchers,
+            language: language,
+            hasIssues: true,
+            hasProjects: true,
+            hasDownloads: true,
+            hasWiki: true,
+            hasPages: false,
+            forksCount: forksCount,
+            mirrorURL: nil,
+            archived: false,
+            disabled: false,
+            openIssuesCount: openIssues,
+            license: nil,
+            forks: forksCount,
+            openIssues: openIssues,
+            watchers: watchers,
+            defaultBranch: "main",
+            score: 0
+        )
     }
 }
 
