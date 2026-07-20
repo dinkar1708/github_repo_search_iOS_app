@@ -17,7 +17,7 @@ struct SplashView: View {
     var body: some View {
         ZStack {
             if startHomeScreen {
-                HomeView()
+                MainTabView()
             } else {
                 ZStack {
                     Image("logo")

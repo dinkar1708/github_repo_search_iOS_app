@@ -22,79 +22,56 @@ struct HomeView: View {
 
     var body: some View {
         NavigationView {
-            ZStack {
-                // Background gradient
-                LinearGradient(
-                    gradient: Gradient(colors: [
-                        Color(UIColor.systemBackground),
-                        Color(UIColor.systemGray6)
-                    ]),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
+            VStack(spacing: 0) {
+                // Compact header with search
+                headerView
 
-                VStack(spacing: 0) {
-                    // Header
-                    headerView
-
-                    // Content
-                    ZStack {
-                        SearchResultView
-                        MessageView
-                    }
+                // Content
+                ZStack {
+                    SearchResultView
+                    MessageView
                 }
             }
-            .navigationBarTitleDisplayMode(.large)
-            .navigationTitle("GitHub Search")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Repositories")
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
 
     private var headerView: some View {
-        VStack(spacing: 16) {
-            // App title
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Repository Search")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                    Text("Search millions of GitHub repos")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-
-                Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.top, 8)
-
-            // Search bar (already has magnifying glass icon built-in)
+        VStack(spacing: 12) {
+            // Search bar
             AppSearchBar(
                 text: $homeViewModel.searchText,
                 textDidChanged: { _ in
                     // Text is already updated via binding, no need to set again
-                    // ViewModel's Combine throttle will handle the API calls
+                    // ViewModel's throttle will handle the API calls
                 },
-                placeholder: .constant("Search repositories...")
+                placeholder: .constant("Search GitHub repositories...")
             )
             .padding(.horizontal)
 
             // Results count if available
             if !homeViewModel.searchItems.isEmpty {
                 HStack {
-                    Text("\(homeViewModel.searchItems.count) repositories found")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+                    HStack(spacing: 4) {
+                        Image(systemName: "book.fill")
+                            .font(.caption)
+                            .foregroundColor(.blue)
+                        Text("\(homeViewModel.searchItems.count) repositories")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(.secondary)
+                    }
                     Spacer()
                 }
                 .padding(.horizontal)
             }
         }
-        .padding(.bottom, 12)
+        .padding(.vertical, 12)
         .background(
             Color(UIColor.systemBackground)
-                .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+                .shadow(color: Color.black.opacity(0.05), radius: 3, x: 0, y: 1)
         )
     }
 
@@ -103,56 +80,76 @@ struct HomeView: View {
         Group {
             switch homeViewModel.messageState {
             case .loading:
-                VStack(spacing: 20) {
+                VStack(spacing: 16) {
                     ProgressView()
-                        .scaleEffect(1.5)
+                        .scaleEffect(1.3)
+                        .tint(.blue)
                     Text("Searching repositories...")
-                        .font(.subheadline)
+                        .font(.callout)
                         .foregroundColor(.secondary)
                 }
+                .frame(maxHeight: .infinity)
             case .error(let error):
-                VStack(spacing: 20) {
+                VStack(spacing: 16) {
                     Image(systemName: "exclamationmark.triangle.fill")
-                        .font(.system(size: 60))
-                        .foregroundColor(.red)
-                    Text("Error")
-                        .font(.title2)
-                        .fontWeight(.bold)
+                        .font(.system(size: 50))
+                        .foregroundColor(.orange)
+                    Text("Oops!")
+                        .font(.title3)
+                        .fontWeight(.semibold)
                     Text(error)
-                        .font(.body)
+                        .font(.callout)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
-                        .padding(.horizontal)
+                        .padding(.horizontal, 32)
                 }
+                .frame(maxHeight: .infinity)
                 .padding()
             case .emptySearchResult:
-                VStack(spacing: 20) {
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 60))
+                VStack(spacing: 16) {
+                    Image(systemName: "magnifyingglass.circle.fill")
+                        .font(.system(size: 50))
                         .foregroundColor(.gray)
                     Text("No Repositories Found")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                    Text("Try adjusting your search terms")
-                        .font(.body)
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                    Text("Try a different search term")
+                        .font(.callout)
                         .foregroundColor(.secondary)
-                        .multilineTextAlignment(.center)
                 }
+                .frame(maxHeight: .infinity)
                 .padding()
             case .loaded:
                 if homeViewModel.searchItems.isEmpty {
                     VStack(spacing: 20) {
-                        Image(systemName: "book.fill")
-                            .font(.system(size: 60))
-                            .foregroundColor(.blue)
-                        Text("Start Searching")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                        Text("Enter a repository name to begin")
-                            .font(.body)
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
+                        // Icon with gradient background
+                        ZStack {
+                            Circle()
+                                .fill(
+                                    LinearGradient(
+                                        colors: [Color.blue.opacity(0.2), Color.purple.opacity(0.1)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .frame(width: 100, height: 100)
+
+                            Image(systemName: "book.fill")
+                                .font(.system(size: 40))
+                                .foregroundColor(.blue)
+                        }
+
+                        VStack(spacing: 8) {
+                            Text("Search Repositories")
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                            Text("Find millions of open source projects")
+                                .font(.callout)
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
                     }
+                    .frame(maxHeight: .infinity)
                     .padding()
                 } else {
                     EmptyView()

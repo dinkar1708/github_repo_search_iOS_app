@@ -13,6 +13,7 @@ import SwiftUI
 struct SearchItemDetailsView: View {
     var searchItem: SearchItem
     @Environment(\.openURL) var openURL
+    @State private var favoritesManager = FavoritesManager.shared
 
     var body: some View {
         ScrollView {
@@ -38,6 +39,24 @@ struct SearchItemDetailsView: View {
         }
         .navigationTitle(searchItem.name)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    toggleFavorite()
+                }) {
+                    Image(systemName: favoritesManager.isFavoriteRepository(repositoryId: searchItem.id) ? "star.fill" : "star")
+                        .foregroundColor(favoritesManager.isFavoriteRepository(repositoryId: searchItem.id) ? .yellow : .gray)
+                }
+            }
+        }
+    }
+
+    private func toggleFavorite() {
+        if favoritesManager.isFavoriteRepository(repositoryId: searchItem.id) {
+            favoritesManager.removeFavoriteRepository(repositoryId: searchItem.id)
+        } else {
+            favoritesManager.addFavoriteRepository(repository: searchItem)
+        }
     }
 
     // MARK: - Hero Section

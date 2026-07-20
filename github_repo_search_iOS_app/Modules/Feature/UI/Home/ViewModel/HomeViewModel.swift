@@ -34,8 +34,8 @@ class HomeViewModel {
 
     var searchItems = [SearchItem]()
 
-    init(state: MessageState = .loading) {
-        // initialize state
+    init(state: MessageState = .loaded) {
+        // initialize state - start with loaded (empty) instead of loading
         messageState = state
     }
 

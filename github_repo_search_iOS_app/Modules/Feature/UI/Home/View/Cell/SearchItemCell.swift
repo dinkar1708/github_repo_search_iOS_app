@@ -101,10 +101,6 @@ struct SearchItemCell: View {
             }
 
             Spacer()
-
-            Image(systemName: "chevron.right")
-                .font(.caption)
-                .foregroundColor(.gray)
         }
         .padding()
         .background(

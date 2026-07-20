@@ -1,10 +1,35 @@
 # GitHub Repository Search iOS App
 
-A modern, native iOS application for searching GitHub repositories with a beautiful, intuitive user interface built entirely with SwiftUI.
+A modern, native iOS application for searching GitHub repositories and users with a beautiful, intuitive user interface built entirely with SwiftUI.
+
+## About This Project
+
+This iOS app achieves feature parity with the Android GitHub Cruise app. Both apps share the same core features for searching repositories, users, viewing profiles, and managing favorites. The implementation follows native platform conventions (SwiftUI for iOS, Jetpack Compose for Android) while maintaining consistent functionality.
+
+### 📚 Documentation
+
+**iOS Documentation:**
+- [Features Guide](docs/FEATURES.md) - Complete feature overview
+- [Testing Guide](docs/TESTING.md) - Testing documentation
+
+**Master Documentation** (GitHub Cruise Android):
+
+For complete API specs and cross-platform guidelines, see the Android repository:
+- [Master Feature Specification](https://github.com/dinkar1708/GithubCruiseAndroid/blob/main/docs/master/MASTER_FEATURE_SPECIFICATION.md)
+- [GitHub API Specification](https://github.com/dinkar1708/GithubCruiseAndroid/blob/main/docs/master/GITHUB_API_SPECIFICATION.md)
+- [Master Best Practices](https://github.com/dinkar1708/GithubCruiseAndroid/blob/main/docs/master/MASTER_BEST_PRACTICES.md)
 
 ## Features
 
-- Incremental search with real-time results
+### Core Features
+- **Repository Search** - Incremental search with real-time results and 3-second debouncing
+- **User Search** - Search GitHub users with 800ms debouncing and auto-complete
+- **User Profiles** - View detailed user profiles with bio, stats, and repository list
+- **Favorites** - Save favorite users AND repositories with UserDefaults persistence
+- **Tab Navigation** - 4 tabs: Users, Repositories, Favorites, Settings
+- **Settings** - Dark mode toggle, language selection, cache management
+
+### Technical Features
 - No external libraries - 100% native iOS implementation
 - API request throttling for optimal performance
 - Modern iOS design with cards, gradients, and smooth animations
@@ -16,10 +41,31 @@ A modern, native iOS application for searching GitHub repositories with a beauti
 
 ## Screenshots
 
-<img width="350" height="750" alt="Simulator Screenshot - iPhone 17e - 2026-06-11 at 15 34 35" src="https://github.com/user-attachments/assets/d7bf4028-e22e-4b64-8c1b-0d8ec9e0c70e" />
-<img width="350" height="750" alt="Simulator Screenshot - iPhone 17e - 2026-06-11 at 15 36 28" src="https://github.com/user-attachments/assets/170e1196-0279-4c4f-a4e2-6460bb3dbcbf" />
-<img width="350" height="750" alt="Simulator Screenshot - iPhone 17e - 2026-06-11 at 15 35 49" src="https://github.com/user-attachments/assets/be540b62-effd-4e30-b235-c02645d134c4" />
-<img width="350" height="750" alt="Simulator Screenshot - iPhone 17e - 2026-06-11 at 15 35 52" src="https://github.com/user-attachments/assets/c9f0303f-fb97-4d71-ba6e-cdadcbc98640" />
+### Light Mode
+
+<div align="center">
+  <img src="docs/images/01-repositories-search.png" alt="Repository Search" width="250"/>
+  <img src="docs/images/02-repositories-results.png" alt="Repository Results" width="250"/>
+  <img src="docs/images/03-users-search.png" alt="User Search" width="250"/>
+</div>
+
+<div align="center">
+  <img src="docs/images/04-user-profile.png" alt="User Profile" width="250"/>
+  <img src="docs/images/05-repository-details.png" alt="Repository Details" width="250"/>
+  <img src="docs/images/06-favorites-users.png" alt="Favorites - Users" width="250"/>
+</div>
+
+<div align="center">
+  <img src="docs/images/07-favorites-repositories.png" alt="Favorites - Repositories" width="250"/>
+  <img src="docs/images/08-settings.png" alt="Settings" width="250"/>
+</div>
+
+### Dark Mode
+
+<div align="center">
+  <img src="docs/images/09-users-dark-mode.png" alt="Users - Dark Mode" width="250"/>
+  <img src="docs/images/10-repositories-dark-mode.png" alt="Repositories - Dark Mode" width="250"/>
+</div>
 
 
 # Folder structure
@@ -27,20 +73,35 @@ A modern, native iOS application for searching GitHub repositories with a beauti
 <img width="327" alt="Screenshot 2024-02-04 at 20 56 41" src="https://github.com/dinkar1708/github_repo_search_iOS_app/assets/14831652/a793a4db-8ed3-4ba5-aae4-c5c223c88356">
 
 
-## UI Design
+## App Structure
 
-**Home Screen:**
-- Gradient background with adaptive dark mode
-- Real-time search with debouncing
-- Rich repository cards with avatars, stats, and descriptions
-- Empty states for initial, no results, errors, and loading
+The app consists of 4 main tabs:
+
+**Tab 1: Users**
+- Search GitHub users by username
+- View user cards with avatar and stats
+- Tap to view detailed profile
+- 800ms debounce for smooth searching
+
+**Tab 2: Repositories**
+- Search GitHub repositories
+- Real-time search with 3-second debouncing
+- Rich repository cards with stats
 - Infinite scroll pagination
 
-**Detail View:**
-- Hero section with owner avatar and description
-- Statistics grid (stars, forks, watchers, issues)
-- Repository information (branch, license, dates, features)
-- Action buttons (open in Safari, copy clone URL)
+**Tab 3: Favorites**
+- View saved favorite users AND repositories
+- Segmented control to switch between Users and Repositories
+- Swipe to delete
+- Persists across app restarts using UserDefaults
+- One-tap favorite from repository search
+- One-tap favorite from user profile
+
+**Tab 4: Settings**
+- Toggle dark mode
+- Change language (English/Japanese)
+- Clear cache
+- App information
 
 # Testing
 
@@ -101,6 +162,17 @@ From Xcode, click **Product → Test** (or press `⌘U`) - it will run all test 
 - Red = needs tests (<40%)
 
 For detailed coverage documentation, command line usage, and best practices, see **[docs/TESTING.md](docs/TESTING.md)**
+
+## Additional Documentation
+
+The following documentation files explain implementation details:
+
+- **BUILD_SUCCESS.md** - Complete build and implementation summary
+- **DEBOUNCE_FIX.md** - How debouncing was fixed for user search
+- **SIMULATOR_WARNINGS_EXPLAINED.md** - Analysis of iOS simulator warnings (all harmless)
+- **DATA_PERSISTENCE_EXPLAINED.md** - Why UserDefaults is used instead of SwiftData
+- **XCODE_BUILD_STEPS.md** - Step-by-step guide for building the project
+
 ## Requirements
 
 - **Xcode 15.0 or later** (latest version recommended)
@@ -129,13 +201,24 @@ For detailed coverage documentation, command line usage, and best practices, see
 ## Project Structure
 
 ```
-App/
-├── UI/           # Splash, Home, Details screens
-├── Data/         # Models, Network, Repository
-├── Util/         # Reusable utilities
-└── Resources/    # Images, localization
+Modules/
+├── Data/
+│   ├── Remote/
+│   │   ├── Model/           # SearchUser, UserProfile, UserRepository, SearchItem
+│   │   ├── Request/         # API request definitions
+│   │   └── Repository/      # GithubRepository
+│   └── Network/             # ApiClient
+├── Feature/
+│   └── UI/
+│       ├── UserSearch/      # User search tab
+│       ├── UserProfile/     # User profile detail
+│       ├── Home/            # Repository search tab
+│       ├── Favorites/       # Favorites tab with FavoritesManager
+│       └── Settings/        # Settings tab
+└── Util/                    # Shared utilities
 
-AppConfig/        # Launch configuration
+AppConfig/
+└── MainTabView.swift        # Tab navigation
 ```
 
 ## Platform Support
@@ -146,51 +229,16 @@ AppConfig/        # Launch configuration
 **Orientations:** Portrait, Landscape
 
 
-# API handling - 
-## API documentation
-- https://developer.github.com/v3/search/
-- GET /search/repositories
-- Search for repo name https://api.github.com/search/repositories?q=swift%20in:name&per_page=40&page=1
-## As per documentation : 
-You need to successfully authenticate and have access to the repositories in your search queries, otherwise, you'll see a 422 Unprocessible Entry error with a "Validation Failed" message. For example, your search will fail if your query includes repo:, user:, or org: qualifiers that request resources that you don't have access to when you sign in on GitHub.
-## Error handling of api
-### Use below for error handling, if not passing any query
-```
-https://api.github.com/search/repositories?q=
-{
-  "message": "Validation Failed",
-  "errors": [
-    {
-      "resource": "Search",
-      "field": "q",
-      "code": "missing"
-    }
-  ],
-  "documentation_url": "https://docs.github.com/v3/search"
-}
+## API Endpoints Used
 
-https://api.github.com/search/repositories?q=%20in:name
-{
-  "message": "Validation Failed",
-  "errors": [
-    {
-      "message": "None of the search qualifiers apply to this search type.",
-      "resource": "Search",
-      "field": "q",
-      "code": "invalid"
-    }
-  ],
-  "documentation_url": "https://docs.github.com/v3/search/"
-}
-```
-### error handling for invalid url, not found, search/repositories/  not valid url, valid is search/repositories
-```
-https://api.github.com/search/repositories/?q=%22swiftui%22
-{
-    "message": "Not Found",
-    "documentation_url": "https://docs.github.com/rest"
-}
-```
+The app uses the following GitHub APIs:
+
+1. Search Repositories: `GET /search/repositories`
+2. Search Users: `GET /search/users`
+3. User Profile: `GET /users/{username}`
+4. User Repositories: `GET /users/{username}/repos`
+
+All API calls use async/await with proper error handling.
 
 ## Key Highlights
 
@@ -208,18 +256,33 @@ https://api.github.com/search/repositories/?q=%22swiftui%22
 - Structured error handling
 - Clean separation of concerns
 
+## Recent Updates (July 2026)
+
+Completed features:
+- User search with debouncing
+- User profile view with repository list
+- Favorites feature with UserDefaults persistence (Users AND Repositories)
+- Segmented control in Favorites tab to switch between Users/Repositories
+- Favorite button on repository cards
+- Favorite button on user profile screen
+- Settings screen with dark mode and language selection
+- 4-tab navigation (Users, Repositories, Favorites, Settings)
+- Debounce fix for smooth searching without cancellation errors
+- Legacy favorites migration support
+
 ## TODO List
 
-- [ ] Complete all unit test cases
-- [ ] Complete all UI test cases
+- [x] Add repository favorites functionality (COMPLETED July 2026)
+- [x] Add segmented control for Users/Repositories in Favorites tab (COMPLETED July 2026)
+- [ ] Add unit tests for FavoritesManager (repository favorites)
+- [ ] Add unit tests for new ViewModels (UserSearchViewModel, UserProfileViewModel)
+- [ ] Add UI tests for new features (User Search, Favorites with repositories)
 - [ ] Add CI/CD pipeline (Bitrise/Fastlane)
 - [ ] Implement comprehensive logging system
-- [ ] Add pull-to-refresh on home screen
+- [ ] Add pull-to-refresh on all tabs
 - [ ] Implement search history
-- [ ] Add favorites/bookmarks feature
 - [ ] Replace placeholder app icon with custom design
 - [ ] Add animation transitions between screens
-- [ ] Implement caching for offline support
 
 # Meta
 - Dinakar Maurya
